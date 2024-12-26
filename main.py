@@ -1,15 +1,33 @@
 import pip._vendor.requests as requests
 
-lmao = "https://data.ninjakiwi.com/btd6/races/Treet_Yourself_Extreme_Edition_m4ukr9d4/leaderboard"
+def seconds_to_minutes(seconds):
+    if seconds < 0:
+        raise ValueError("Seconds cannot be negative.")
+    minutes = seconds // 60
+    remaining_seconds = seconds % 60
+    return f"{minutes}:{remaining_seconds:02}"
+
+def time_to_readable(time):
+    time_seconds = int(str(time)[:-3])
+    time_ms = str(time)[-3:]
+    return str(seconds_to_minutes(time_seconds)) + "." + time_ms
 
 url = "https://data.ninjakiwi.com/"
-cat = "btd6/races/"
-race_id = "Corvus_Carry_m4unf7th/leaderboard/"
+category = "btd6/races/"
+race_id = "Treet_Yourself_Extreme_Edition_m4ukr9d4/"
+tab = "leaderboard/"
 
-url = url + cat + race_id
+result = url + category + race_id + tab
 
-print(lmao)
+print("Result: " + result)
 
-response = requests.get(lmao)                                                       
+response = requests.get(result)
 
-print(response.json())
+# this json is a dictionary so you can just search for items
+leaderboard = response.json()
+
+print(leaderboard['body'][0])
+print(leaderboard['body'][0]['scoreParts'][0]['score'])
+
+time = leaderboard['body'][0]['scoreParts'][0]['score']
+print(time_to_readable(time))
