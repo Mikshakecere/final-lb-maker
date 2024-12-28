@@ -66,6 +66,11 @@ for race in race_resp['body']:
         target_race = race
         break
 
+if target_race == {}:
+    # eventually put this all in a while loop so you just continue trying again but yeah
+    print("couldnt find the target race")
+    exit()
+
 leaderboard = requests.get(target_race['leaderboard']).json()
 
 
