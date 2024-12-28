@@ -22,6 +22,22 @@ def extract_top_five(leaderboard):
         place_top_5[f"place_{i}"] = leaderboard['body'][i]
     return place_top_5
 
+def extract_profile_id(data):
+    return data['profile'][38:]
+
+def filter_data(data):
+    for player in data.values():
+        del player['scoreParts']
+        del player['submissionTime']
+        player['score'] = time_to_readable(player['score'])
+        player['id'] = extract_profile_id(player)
+    return data
+
+def print_top_five(data):
+    for i, j in filtered_top_five.items():
+        print(i)
+        print(j)    
+
 print("Search for race using name: ")
 name = input().lower()
 
@@ -47,21 +63,20 @@ target_race = {}
 for race in race_resp['body']:
     if race['name'].lower() == name:
         race_id = race['id']
-        print(race)
-        print(counter)
         target_race = race
         break
-    else:
-        # amount of races traversed before finding target race
-        counter += 1
+
+leaderboard = requests.get(target_race['leaderboard']).json()
+
 
 # response = requests.get(result)
 
 # # this json is a dictionary so you can just search for items
-# leaderboard = response.json()
 
-# top_five = extract_top_five(leaderboard)
-# print(top_five)
+top_five = extract_top_five(leaderboard)
+filtered_top_five = filter_data(top_five)
+
+print_top_five(filtered_top_five)
 
 # # print the time
 # print(place_first)
