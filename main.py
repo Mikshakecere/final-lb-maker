@@ -16,6 +16,12 @@ def time_to_readable(time):
 
     return str(seconds_to_minutes(time_seconds)) + "." + time_ms
 
+def extract_top_five(leaderboard):
+    place_top_5 = {}
+    for i in range(5):
+        place_top_5[f"place_{i}"] = leaderboard['body'][i]
+    return place_top_5
+
 # link to request info
 url = "https://data.ninjakiwi.com/"
 category = "btd6/races/"
@@ -31,13 +37,8 @@ response = requests.get(result)
 # this json is a dictionary so you can just search for items
 leaderboard = response.json()
 
-place_top_5 = {}
-
-for i in range(5):
-    place_top_5[f"place_{i}"] = leaderboard['body'][i]
-
-for i in range(5):
-    print(place_top_5[f"place_{i}"])
+top_five = extract_top_five(leaderboard)
+print(top_five)
 
 # # print the time
 # print(place_first)
