@@ -25,20 +25,38 @@ def extract_top_five(leaderboard):
 # link to request info
 url = "https://data.ninjakiwi.com/"
 category = "btd6/races/"
-race_id = requests.get(url + category).json()['body'][3]['id']
+race_id = ""
 tab = "leaderboard/"
 
+race = url + category
 result = url + category + race_id + "/" + tab
 
 print("Result: " + result)
 
-response = requests.get(result)
+# traverse races body
+# if id equal Treet_Yourself_Extreme_Edition_m4ukr9d4, 
+#   save the id, print out the data and then break
 
-# this json is a dictionary so you can just search for items
-leaderboard = response.json()
+counter = 0
+race_resp = requests.get(race).json()
 
-top_five = extract_top_five(leaderboard)
-print(top_five)
+for race in race_resp['body']:
+    if race['id'] == "Treet_Yourself_Extreme_Edition_m4ukr9d4":
+        race_id = race['id']
+        print(race)
+        print(counter)
+        break
+    else:
+        # amount of races traversed before finding target race
+        counter += 1
+
+# response = requests.get(result)
+
+# # this json is a dictionary so you can just search for items
+# leaderboard = response.json()
+
+# top_five = extract_top_five(leaderboard)
+# print(top_five)
 
 # # print the time
 # print(place_first)
