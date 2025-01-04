@@ -9,11 +9,7 @@ def seconds_to_minutes(seconds):
 
 def time_to_readable(time):
     time_seconds = int(str(time)[:-3])
-    time_ms = str(time)[-3:]
-
-    # truncate the ms
-    time_ms = str(int(time_ms)//10)
-
+    time_ms = f"{(int(str(time)[-3:])//10):02d}"
     return str(seconds_to_minutes(time_seconds)) + "." + time_ms
 
 def extract_top_five(leaderboard):
@@ -38,8 +34,7 @@ def print_top_five(data):
         print(i)
         print(j)    
 
-print("Search for race using name: ")
-name = input().lower()
+
 
 # link to request info
 url = "https://data.ninjakiwi.com/"
@@ -60,19 +55,22 @@ counter = 0
 race_resp = requests.get(race).json()
 target_race = {}
 
-for race in race_resp['body']:
-    if race['name'].lower() == name:
-        race_id = race['id']
-        target_race = race
-        break
+while (target_race == {}):
+    print("Search for race using name: ")
+    name = input().lower()
 
-if target_race == {}:
-    # eventually put this all in a while loop so you just continue trying again but yeah
-    print("couldnt find the target race")
-    exit()
+
+    for race in race_resp['body']:
+        if race['name'].lower() == name:
+            race_id = race['id']
+            target_race = race
+            break
+
+    if target_race == {}:
+        # eventually put this all in a while loop so you just continue trying again but yeah
+        print("Couldn't find the target race, please try again")
 
 leaderboard = requests.get(target_race['leaderboard']).json()
-
 
 # response = requests.get(result)
 
