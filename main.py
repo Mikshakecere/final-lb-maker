@@ -34,8 +34,6 @@ def print_top_five(data):
         print(i)
         print(j)    
 
-
-
 # link to request info
 url = "https://data.ninjakiwi.com/"
 category = "btd6/races/"
@@ -43,16 +41,18 @@ race_id = ""
 tab = "leaderboard/"
 
 race = url + category
+
 # result = url + category + race_id + "/" + tab
 
 # print("Result: " + result)
 
-# traverse races body
-# if id equal Treet_Yourself_Extreme_Edition_m4ukr9d4, 
-#   save the id, print out the data and then break
+race_resp = requests.get(race).json()
+
+if race_resp['error'] is not None or race_resp['success'] is False:
+    print("Races category unavailable at the moment")
+    exit()
 
 counter = 0
-race_resp = requests.get(race).json()
 target_race = {}
 
 while (target_race == {}):
