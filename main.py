@@ -59,7 +59,6 @@ while (target_race == {}):
     print("Search for race using name: ")
     name = input().lower()
 
-
     for race in race_resp['body']:
         if race['name'].lower() == name:
             race_id = race['id']
